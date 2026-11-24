@@ -1,0 +1,1705 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>The Global Intern — iOS TOEIC Career RPG</title>
+  
+  <!-- iOS PWA Meta Tags (เปิดเต็มจอเสมือน Native App) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TOEIC RPG">
+  <meta name="theme-color" content="#0f172a">
+
+  <style>
+    :root {
+      --bg: #eef2f6;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --border: #e2e8f0;
+      --ink: #0f172a;
+      --muted: #475569;
+      --subtle: #64748b;
+      --brand: #007aff;
+      --brand-dark: #0056b3;
+      --brand-light: #e0f2fe;
+      --accent: #5856d6;
+      --accent-light: #ede9fe;
+      --success: #34c759;
+      --success-light: #dcfce7;
+      --warning: #ff9500;
+      --warning-light: #fef3c7;
+      --danger: #ff3b30;
+      --danger-light: #fee2e2;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 38px;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --shadow-phone: 0 20px 50px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.08);
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Sarabun", "Noto Sans Thai", "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .workspace-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .workspace-header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .app-brand { display: flex; align-items: center; gap: 12px; }
+    .app-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
+    }
+
+    .app-title-group h1 { margin: 0; font-size: 18px; font-weight: 700; }
+    .app-title-group p { margin: 0; font-size: 12px; color: var(--muted); }
+    .header-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+    .pill-badge.sample { background: var(--warning-light); border-color: #fde68a; color: #92400e; }
+    .pill-badge.ios { background: var(--brand-light); border-color: #bae6fd; color: #0369a1; }
+
+    .workspace-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (min-width: 960px) {
+      .workspace-container { grid-template-columns: 430px 1fr; }
+    }
+
+    .phone-column { display: flex; flex-direction: column; align-items: center; }
+    .ios-device {
+      width: 100%;
+      max-width: 410px;
+      background: #1e293b;
+      padding: 12px;
+      border-radius: 46px;
+      box-shadow: var(--shadow-phone);
+      border: 3px solid #334155;
+      position: relative;
+    }
+
+    .ios-screen {
+      background: #f2f2f7;
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 760px;
+      position: relative;
+    }
+
+    .ios-statusbar {
+      height: 44px;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .dynamic-island {
+      width: 96px;
+      height: 22px;
+      background: #0f172a;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .player-hud {
+      background: var(--surface);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .hud-profile { display: flex; align-items: center; gap: 10px; }
+    .hud-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .hud-role { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+    .hud-sub { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .stat-chip {
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stat-chip.cefr { background: var(--accent-light); color: var(--accent); }
+    .stat-chip.toeic { background: var(--brand-light); color: var(--brand-dark); }
+
+    .ios-viewport {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .ios-tabbar {
+      height: 68px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 6px 4px 12px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--subtle);
+      font-family: inherit;
+      font-size: 9px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.15s ease;
+      padding: 2px;
+    }
+    .tab-btn:hover { color: var(--brand); background: rgba(0, 122, 255, 0.05); }
+    .tab-btn.active { color: var(--brand); }
+    .tab-icon { font-size: 16px; line-height: 1; }
+
+    .ios-card {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .ios-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .ios-card-title { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .tag-blue { background: var(--brand-light); color: var(--brand-dark); }
+    .tag-purple { background: var(--accent-light); color: var(--accent); }
+    .tag-green { background: var(--success-light); color: #15803d; }
+    .tag-amber { background: var(--warning-light); color: #b45309; }
+
+    .btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--brand); color: #fff; width: 100%; box-shadow: 0 4px 10px rgba(0, 122, 255, 0.22); }
+    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-secondary { background: var(--surface-soft); color: var(--ink); border-color: var(--border); }
+    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 8px; }
+
+    .quiz-options { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .quiz-option {
+      background: var(--surface-soft);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: left;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .quiz-option:hover:not(:disabled) { border-color: var(--brand); background: #f0f9ff; }
+    .quiz-option.correct { border-color: var(--success); background: var(--success-light); color: #14532d; font-weight: 600; }
+    .quiz-option.wrong { border-color: var(--danger); background: var(--danger-light); color: #7f1d1d; }
+
+    .step-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: 12px;
+    }
+    .step-pill {
+      border: none;
+      background: transparent;
+      padding: 6px 4px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .step-pill.active { background: var(--surface); color: var(--brand); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    .level-node {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .level-node:hover { border-color: var(--brand); }
+    .level-node.active-level { border-color: var(--brand); background: #f0f9ff; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.1); }
+
+    .audio-bar {
+      background: #0f172a;
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 8px 0;
+    }
+    .audio-play-btn {
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .audio-wave { flex: 1; font-size: 12px; color: #cbd5e1; }
+    .speed-toggle {
+      background: #334155;
+      color: #f8fafc;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .blueprint-column { display: flex; flex-direction: column; gap: 20px; }
+    .panel-card {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .panel-card h2 { margin: 0 0 6px 0; font-size: 18px; font-weight: 700; }
+    .panel-subtitle { margin: 0 0 16px 0; font-size: 13px; color: var(--muted); }
+    .table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    th { background: var(--surface-soft); color: var(--ink); font-weight: 700; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--muted); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+    td strong { color: var(--ink); }
+
+    .radar-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      background: var(--surface-soft);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .email-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #1e293b;
+    }
+    .email-sentence { padding: 2px 4px; border-radius: 4px; cursor: pointer; transition: background 0.15s ease; }
+    .email-sentence:hover { background: #fef08a; }
+    .email-sentence.highlighted-correct { background: #86efac; font-weight: 600; }
+    .email-sentence.highlighted-wrong { background: #fca5a5; text-decoration: line-through; }
+
+    .ios-lockscreen-mock {
+      background: linear-gradient(160deg, #1e1b4b, #1e3a8a, #0f172a);
+      color: #fff;
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .lock-time { text-align: center; font-size: 36px; font-weight: 800; line-height: 1.1; margin-bottom: 12px; }
+    .widget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ios-widget {
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 14px;
+      padding: 10px;
+      font-size: 11px;
+    }
+
+    /* Quest Items */
+    .quest-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .quest-item.completed-ready { border-color: var(--brand); background: #f0f9ff; }
+    .quest-item.claimed { opacity: 0.65; background: var(--surface-soft); }
+    .quest-header { display: flex; justify-content: space-between; align-items: start; gap: 8px; }
+    .quest-title { font-weight: 700; font-size: 13.5px; color: var(--ink); }
+    .quest-desc { font-size: 11px; color: var(--muted); }
+    .quest-progress-bar { height: 6px; background: #e2e8f0; border-radius: 99px; overflow: hidden; margin: 4px 0; }
+    .quest-progress-fill { height: 100%; background: var(--brand); border-radius: 99px; width: 0%; transition: width 0.3s ease; }
+    .quest-progress-fill.done { background: var(--success); }
+    .quest-rewards { display: flex; gap: 12px; font-size: 11px; font-weight: 700; align-items: center; }
+    .quest-reward-pill { background: var(--surface-soft); padding: 2px 6px; border-radius: 6px; border: 1px solid var(--border); }
+    .quest-reward-pill.exp { color: var(--brand-dark); background: var(--brand-light); }
+    .quest-reward-pill.gold { color: #b45309; background: var(--warning-light); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Workspace Header -->
+  <header class="workspace-header">
+    <div class="workspace-header-inner">
+      <div class="app-brand">
+        <div class="app-icon">GI</div>
+        <div class="app-title-group">
+          <h1>The Global Intern: TOEIC Career RPG</h1>
+          <p>ต้นแบบแอปเรียนภาษาอังกฤษบน iOS ผสานจุดเด่น AUA Language Center &amp; Wall Street English</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="pill-badge ios">📱 iOS Interactive Prototype</span>
+        <span class="pill-badge sample">ชุดโจทย์และบทสนทนาจำลอง (Sample Content)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="workspace-container">
+
+    <!-- Left Column: Interactive iPhone Simulator -->
+    <section class="phone-column" aria-label="iOS App Simulator">
+      <div class="ios-device">
+        <div class="ios-screen">
+
+          <!-- iOS Status Bar -->
+          <div class="ios-statusbar">
+            <span>09:41</span>
+            <div class="dynamic-island" id="island-status">● TOEIC RPG</div>
+            <span>5G 🔋100%</span>
+          </div>
+
+          <!-- Player Status HUD -->
+          <div class="player-hud">
+            <div class="hud-profile">
+              <div class="hud-avatar" id="hud-avatar">Lv.1</div>
+              <div>
+                <div class="hud-role" id="hud-role">The Intern (นักศึกษาฝึกงาน)</div>
+                <div class="hud-sub" id="hud-status-text">สถานะ: รอประเมินทักษะก่อนเรียน</div>
+              </div>
+            </div>
+            <div class="hud-stats" style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+              <div style="display: flex; gap: 4px;">
+                <span class="stat-chip cefr" id="hud-cefr">CEFR: A1</span>
+                <span class="stat-chip toeic" id="hud-toeic">เป้า: 120–220</span>
+              </div>
+              <div style="font-size: 10px; font-weight: 700; color: var(--muted); display: flex; gap: 6px;">
+                <span id="hud-exp">✨ EXP: 0</span>
+                <span id="hud-gold">🪙 Gold: 50</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Screen Content -->
+          <div class="ios-viewport" id="ios-viewport">
+            <!-- Populated by JavaScript -->
+          </div>
+
+          <!-- iOS Bottom Tab Navigation -->
+          <nav class="ios-tabbar" aria-label="เมนูหลักในแอป">
+            <button type="button" class="tab-btn active" data-tab="assessment" onclick="switchTab('assessment')">
+              <span class="tab-icon">🎯</span>
+              <span>1. ประเมินทักษะ</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="roadmap" onclick="switchTab('roadmap')">
+              <span class="tab-icon">🗺️</span>
+              <span>2. แผนที่ 5 เลเวล</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="stage" onclick="switchTab('stage')">
+              <span class="tab-icon">🎮</span>
+              <span>3. เล่นด่านเกม</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="ios" onclick="switchTab('ios')">
+              <span class="tab-icon">🍎</span>
+              <span>4. ฟีเจอร์ iOS</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="quests" onclick="switchTab('quests')">
+              <span class="tab-icon">📜</span>
+              <span>5. เควสต์รายวัน</span>
+            </button>
+          </nav>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: Curriculum Blueprint & Comparative Matrix -->
+    <section class="blueprint-column" aria-label="โครงสร้างหลักสูตรและข้อมูลเปรียบเทียบ">
+      <div class="panel-card">
+        <h2>📌 1. การผสานจุดเด่น AUA Language Center และ Wall Street English</h2>
+        <p class="panel-subtitle">ตารางเปรียบเทียบปรัชญาการสอนและการนำมาประยุกต์ใช้ในแอปพลิเคชัน TOEIC บนระบบ iOS</p>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>มิติการเรียนรู้</th>
+                <th>จุดเด่นจาก AUA Language Center</th>
+                <th>จุดเด่นจาก Wall Street English</th>
+                <th>การประยุกต์ใช้ในแอป TOEIC (iOS)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ปรัชญาการสอน</strong></td>
+                <td><strong>Natural Approach (ALC Method):</strong> เน้นการซึมซับผ่านการฟังและทำความเข้าใจบริบทก่อน ไม่เน้นท่องจำกฎไวยากรณ์ที่ตึงเครียด</td>
+                <td><strong>Multimethod® &amp; Blended Learning:</strong> เรียนรู้ผ่านซีรีส์/เนื้อเรื่องจำลองในที่ทำงาน พร้อมแบบฝึกหัด Interactive และ AI วัดผลทันที</td>
+                <td>สร้างเนื้อเรื่อง <strong>"The Global Intern"</strong> ให้ผู้เรียนสวมบทบาทพนักงานใหม่ ค่อยๆ ซึมซับศัพท์และเสียงพูดจากสถานการณ์ในออฟฟิศ</td>
+              </tr>
+              <tr>
+                <td><strong>การวัดระดับและแบ่งเลเวล</strong></td>
+                <td>ใช้ <strong>AUA-Oxford Placement Test</strong> แบ่งระดับตามมาตรฐาน CEFR และแบ่งย่อยเป็น Part เพื่อให้ค่อยๆ ก้าวหน้า</td>
+                <td>แบ่งละเอียด <strong>20 Levels</strong> อิงตามมาตรฐาน <strong>CEFR (Pre-A1 ถึง C1)</strong> ที่เทียบเคียงคะแนน TOEIC ได้อย่างชัดเจน</td>
+                <td>ออกแบบระบบ <strong>Adaptive Placement Test</strong> ก่อนเรียน (วัดคำศัพท์ ฟัง อ่าน) เพื่อจัดผู้เรียนเข้าสู่ 5 ระดับหลัก (20 ด่านย่อย) ตามฐานคะแนน TOEIC</td>
+              </tr>
+              <tr>
+                <td><strong>บรรยากาศและแรงจูงใจ</strong></td>
+                <td>บรรยากาศเป็นกันเอง มีชมรมและกิจกรรมกลุ่ม (Social/Interest Clubs) ที่ใช้ภาษาผ่านงานอดิเรก</td>
+                <td>มีระบบติดตามผลชัดเจน (Progress Tracking) บังคับให้ผู้เรียนต้องฝึกออกเสียงและโต้ตอบเพื่อผ่านแต่ละบท</td>
+                <td>ใช้ระบบ <strong>Gamification</strong> เต็มรูปแบบ มีเควสต์รายวัน การสะสมแต้มเลื่อนตำแหน่ง และการจับกลุ่มทำภารกิจ (Guild/Club)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h2>📈 2. โครงสร้างหลักสูตรแบบไล่ระดับ (5-Tier Level Progression)</h2>
+        <p class="panel-subtitle">อ้างอิงโครงสร้างการเทียบระดับ CEFR กับคะแนน TOEIC มาตรฐานสากล</p>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>เลเวลในเกม (ตำแหน่ง)</th>
+                <th>ระดับ CEFR</th>
+                <th>เป้าหมาย TOEIC</th>
+                <th>คำศัพท์ (Vocabulary)</th>
+                <th>การฟัง (Listening)</th>
+                <th>การอ่าน (Reading)</th>
+              </tr>
+            </thead>
+            <tbody id="curriculum-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const LEVELS = [
+      {
+        id: 1, role: "Level 1: The Intern", thaiRole: "นักศึกษาฝึกงาน", cefr: "A1 (WSE Lv. 3-5)", cefrShort: "A1", toeic: "120 – 220", subStages: "ด่านย่อย 1 – 4",
+        vocabDesc: "คำศัพท์พื้นฐานในชีวิตประจำวันและออฟฟิศ (300 คำแรก), ชนิดของคำ (Parts of Speech)",
+        listenDesc: "Part 1 (Photographs): ฝึกฟังคำกริยาแสดงท่าทาง และคำบุพบทบอกตำแหน่งสั้นๆ ชัดๆ",
+        readDesc: "อ่านป้ายประกาศสั้นๆ นามบัตร และตารางนัดหมายพื้นฐาน",
+        story: {
+          title: "Episode 1: วันแรกที่แผนกต้อนรับ (First Day at Reception)",
+          scene: "เช้าวันจันทร์ที่สำนักงานใหญ่ พี่เลี้ยง (Mentor Sarah) พาคุณเดินแนะนำโต๊ะทำงานและตารางนัดหมายประจำวัน",
+          audioScript: "Good morning! Here is your visitor badge. Your desk is next to the printer. Remember, our team meeting starts at ten o'clock in Room B.",
+          contextQuestion: "จากบริบทที่ฟังโดยไม่ต้องเปิดดิกชันนารี โต๊ะทำงานของคุณอยู่ตรงไหน?",
+          options: [
+            { text: "อยู่ถัดจากเครื่องปริ้นเตอร์ (Next to the printer)", correct: true },
+            { text: "อยู่ในห้องประชุม B (Inside Room B)", correct: false },
+            { text: "อยู่หน้าเคาน์เตอร์ต้อนรับ (At the front desk)", correct: false }
+          ]
+        },
+        miniGames: {
+          vocab: {
+            prompt: "เลือกคำนาม (Noun) และความหมายที่ตรงกับคำว่า 'Schedule' (ตารางนัดหมาย)",
+            pairs: [
+              { word: "Schedule (n.)", match: "ตารางเวลา / กำหนดการ (Timetable)", correct: true },
+              { word: "Schedule (n.)", match: "เครื่องถ่ายเอกสาร (Photocopier)", correct: false },
+              { word: "Schedule (n.)", match: "ใบเสร็จรับเงิน (Receipt)", correct: false }
+            ]
+          },
+          audio: {
+            partLabel: "TOEIC Part 1 (Photographs)",
+            sceneDesc: "🖼️ [ภาพจำลอง: พนักงานหญิงกำลังยื่นเอกสารให้เพื่อนร่วมงานที่หน้าโต๊ะทำงาน]",
+            audioText: "(A) She is handing a document to a coworker. (B) She is typing on a laptop. (C) She is cleaning the window.",
+            options: [
+              { text: "(A) She is handing a document to a coworker.", correct: true },
+              { text: "(B) She is typing on a laptop.", correct: false },
+              { text: "(C) She is cleaning the window.", correct: false }
+            ]
+          },
+          reading: {
+            question: "ใช้นิ้วแตะประโยคในป้ายประกาศที่ระบุ 'เวลาเริ่มประชุม'",
+            sentences: [
+              { text: "WELCOME NEW INTERNS!", isTarget: false },
+              { text: "Please pick up your ID card at Lobby A.", isTarget: false },
+              { text: "Orientation starts promptly at 10:00 AM in Conference Room B.", isTarget: true },
+              { text: "Lunch will be served in the cafeteria.", isTarget: false }
+            ]
+          }
+        },
+        boss: {
+          title: "Boss Battle Lv.1: ผ่านโปรวันแรก (First-Week Check)",
+          question: "All visitors must wear an identification _______ while inside the office building.",
+          options: [
+            { text: "(A) badge (ป้ายชื่อ - คำนาม)", correct: true, word: "badge (n.) = ป้ายชื่อ/บัตรประจำตัว" },
+            { text: "(B) print (พิมพ์ - คำกริยา)", correct: false, word: "badge (n.) = ป้ายชื่อ/บัตรประจำตัว" },
+            { text: "(C) quickly (อย่างรวดเร็ว - คำกริยาวิเศษณ์)", correct: false, word: "badge (n.) = ป้ายชื่อ/บัตรประจำตัว" }
+          ]
+        },
+        shadowingSentence: "Your desk is next to the printer, and our meeting starts at ten o'clock."
+      },
+      {
+        id: 2, role: "Level 2: Junior Staff", thaiRole: "พนักงานใหม่", cefr: "A2 (WSE Lv. 6-9)", cefrShort: "A2", toeic: "225 – 545", subStages: "ด่านย่อย 5 – 8",
+        vocabDesc: "คำศัพท์การประสานงาน การเดินทาง ร้านอาหาร การสั่งซื้อของ และ Tenses พื้นฐาน",
+        listenDesc: "Part 2 (Question-Response): ฝึกจับคำถาม Wh-Questions และเลี่ยงตัวลวงที่ออกเสียงคล้ายกัน",
+        readDesc: "Part 5 & 6 เบื้องต้น: อ่านอีเมลสั้นๆ บันทึกข้อความ (Memo) และเติมคำในช่องว่าง",
+        story: {
+          title: "Episode 5: ลูกค้าโทรเลื่อนนัดด่วน (Urgent Flight Delay)",
+          scene: "คุณรับสายจาก Mr. Tanaka ที่สนามบิน แจ้งว่าเที่ยวบินล่าช้าและขอเลื่อนเวลาประชุม",
+          audioScript: "Hello, this is Kenji Tanaka. My flight from Tokyo was delayed by two hours. Could we reschedule our lunch meeting to 2:30 PM instead?",
+          contextQuestion: "Mr. Tanaka โทรมาแจ้งให้คุณช่วยทำอะไร?",
+          options: [
+            { text: "ขอเลื่อนนัดประชุมไปเป็นเวลา 14:30 น. (Reschedule to 2:30 PM)", correct: true },
+            { text: "ขอให้ช่วยจองตั๋วเครื่องบินไปโตเกียวใหม่", correct: false },
+            { text: "ขอยกเลิกสัญญาการสั่งซื้อสินค้าทั้งหมด", correct: false }
+          ]
+        },
+        miniGames: {
+          vocab: {
+            prompt: "จับคู่คำพ้องความหมาย (Synonym) ของคำว่า 'Reschedule' (เลื่อนนัด/จัดตารางใหม่)",
+            pairs: [
+              { word: "Reschedule (v.)", match: "Move to a new time / Rearrange", correct: true },
+              { word: "Reschedule (v.)", match: "Purchase office supplies", correct: false },
+              { word: "Reschedule (v.)", match: "Cancel the flight permanently", correct: false }
+            ]
+          },
+          audio: {
+            partLabel: "TOEIC Part 2 (Question-Response) — ระวังตัวลวงเสียงคล้าย",
+            sceneDesc: "🎧 ฟังคำถาม Wh-Question แล้วเลือกคำตอบที่ตรงประเด็น",
+            audioText: "Question: When will the supplier deliver the new laptops?",
+            options: [
+              { text: "(A) By Friday afternoon. (ตอบเรื่องเวลา When)", correct: true },
+              { text: "(B) Yes, at the supply store. (ตัวลวงคำว่า supplier/supply)", correct: false },
+              { text: "(C) On the top shelf. (ตัวลวงเสียงคล้าย laptop/top)", correct: false }
+            ]
+          },
+          reading: {
+            question: "แตะประโยคในบันทึกข้อความ (Memo) ที่บอก 'กำหนดส่งใบเบิกค่าเดินทาง'",
+            sentences: [
+              { text: "MEMO: To All Junior Staff regarding business travel.", isTarget: false },
+              { text: "Please keep all taxi and hotel receipts during your trip.", isTarget: false },
+              { text: "All travel expense forms must be submitted to Accounting by Friday at 4:00 PM.", isTarget: true },
+              { text: "Contact HR if you need a new travel folder.", isTarget: false }
+            ]
+          }
+        },
+        boss: {
+          title: "Boss Battle Lv.2: จัดการบันทึกข้อความ (Part 5 & 6 Check)",
+          question: "Mr. Tanaka _______ our office yesterday to discuss the new purchasing order.",
+          options: [
+            { text: "(A) visited (Past Simple — มีคำว่า yesterday)", correct: true, word: "visit (v.) -> visited (Past Simple Tense)" },
+            { text: "(B) will visit (Future Tense)", correct: false, word: "visit (v.) -> visited (Past Simple Tense)" },
+            { text: "(C) visiting (ขาด Verb to be)", correct: false, word: "visit (v.) -> visited (Past Simple Tense)" }
+          ]
+        },
+        shadowingSentence: "Could we reschedule our lunch meeting to two thirty this afternoon?"
+      },
+      {
+        id: 3, role: "Level 3: Senior Specialist", thaiRole: "ผู้เชี่ยวชาญ", cefr: "B1 (WSE Lv. 10-13)", cefrShort: "B1", toeic: "550 – 780", subStages: "ด่านย่อย 9 – 13",
+        vocabDesc: "คำศัพท์เฉพาะทางธุรกิจ (HR, Marketing, Finance), Phrasal Verbs และ Collocations",
+        listenDesc: "Part 3 (Conversations): ฝึกฟังบทสนทนา 2-3 คน จับใจความสำคัญและเดาเจตนาผู้พูด",
+        readDesc: "Part 7 (Single Passage): เทคนิค Skimming & Scanning อ่านจดหมายธุรกิจและบทความสั้น",
+        story: {
+          title: "Episode 9: ประชุมงบประมาณการตลาด (Marketing Budget Review)",
+          scene: "คุณเข้าร่วมประชุม 3 คนระหว่างฝ่าย Marketing, HR และ Finance เพื่อปรับแผนแคมเปญไตรมาสที่ 3",
+          audioScript: "We need to call off the print advertisement campaign and allocate more budget to digital channels. Looking at the Q3 forecast, online ads give us twice the return.",
+          contextQuestion: "คำว่า 'call off' และเจตนาของผู้พูดในบทสนทนานี้หมายถึงอะไร?",
+          options: [
+            { text: "ยกเลิก (Cancel) โฆษณาสิ่งพิมพ์ เพื่อโยกงบไปช่องทางออนไลน์", correct: true },
+            { text: "โทรศัพท์ไปสั่งพิมพ์โบรชัวร์เพิ่มเป็นสองเท่า", correct: false },
+            { text: "เลื่อนการประชุมงบประมาณออกไปเป็นปีหน้า", correct: false }
+          ]
+        },
+        miniGames: {
+          vocab: {
+            prompt: "จับคู่ Phrasal Verb & Business Collocation: 'Call off' (ยกเลิก)",
+            pairs: [
+              { word: "Call off (phr.v.)", match: "Cancel an event or campaign", correct: true },
+              { word: "Call off (phr.v.)", match: "Telephone a new customer", correct: false },
+              { word: "Call off (phr.v.)", match: "Sign an employment contract", correct: false }
+            ]
+          },
+          audio: {
+            partLabel: "TOEIC Part 3 (Conversations — เดาเจตนาผู้พูด)",
+            sceneDesc: "🎧 บทสนทนา 2 คนเรื่องการคัดเลือกบุคลากร (HR & Marketing)",
+            audioText: "Woman: Have we reviewed the applications for the Marketing Specialist role? Man: Not yet, the annual financial audit has taken up all morning. Woman: I can screen the resumes first if you'd like.",
+            options: [
+              { text: "(A) เสนอตัวช่วยคัดกรองเรซูเม่ให้ก่อน (Offer assistance)", correct: true },
+              { text: "(B) ตำหนิฝ่ายการเงินที่ส่งงบประมาณล่าช้า", correct: false },
+              { text: "(C) ขอลาพักร้อนในช่วงบ่าย", correct: false }
+            ]
+          },
+          reading: {
+            question: "ใช้เทคนิค Scanning แตะประโยคในจดหมายธุรกิจที่ระบุ 'เงื่อนไขการรับส่วนลด 15%'",
+            sentences: [
+              { text: "Dear Valued Partner, Thank you for inquiring about our Q3 marketing software.", isTarget: false },
+              { text: "Our standard corporate license includes 24/7 technical support.", isTarget: false },
+              { text: "Organizations that sign an annual contract before August 31 will receive a 15% early-bird discount.", isTarget: true },
+              { text: "Please let us know if you would like a product demonstration.", isTarget: false }
+            ]
+          }
+        },
+        boss: {
+          title: "Boss Battle Lv.3: ปิดแผนการตลาด (Part 3 & 7 Check)",
+          question: "The Finance Department asked all teams to _______ unnecessary expenses before the end of the quarter.",
+          options: [
+            { text: "(A) cut back on (Phrasal Verb = ลดทอน/ประหยัด)", correct: true, word: "cut back on (phr.v.) = ลดค่าใช้จ่าย" },
+            { text: "(B) look up to (เคารพนับถือ)", correct: false, word: "cut back on (phr.v.) = ลดค่าใช้จ่าย" },
+            { text: "(C) hand out (แจกจ่าย)", correct: false, word: "cut back on (phr.v.) = ลดค่าใช้จ่าย" }
+          ]
+        },
+        shadowingSentence: "We need to allocate more budget to digital marketing channels this quarter."
+      },
+      {
+        id: 4, role: "Level 4: Project Manager", thaiRole: "ผู้จัดการโครงการ", cefr: "B2 (WSE Lv. 14-17)", cefrShort: "B2", toeic: "785 – 940", subStages: "ด่านย่อย 14 – 17",
+        vocabDesc: "คำพ้องความหมายระดับสูง (Advanced Synonyms), โครงสร้างประโยคซับซ้อน (Participle, Inversion)",
+        listenDesc: "Part 4 (Short Talks): ฟังประกาศสนามบิน รายงานข่าว การประชุม และคำถามที่ต้องดูกราฟประกอบ",
+        readDesc: "Part 7 (Double Passages): การเชื่อมโยงข้อมูลข้ามเอกสาร 2 ชิ้น",
+        story: {
+          title: "Episode 14: รายงานความคืบหน้าโครงการพร้อมกราฟ (Project Briefing & Chart)",
+          scene: "คุณกำลังฟังประกาศสรุปยอดส่งมอบสินค้าประจำไตรมาสควบคู่กับการดูกราฟบนหน้าจอ",
+          audioScript: "Attention project leads. Although our North region exceeded targets at 45%, the South branch experienced a temporary logistics bottleneck, dropping to 15%. Please review the revised shipment schedule.",
+          contextQuestion: "เมื่อดูกราฟควบคู่กับการฟัง สาขาใดที่มีสัดส่วนเหลือ 15% จากปัญหาการขนส่ง?",
+          options: [
+            { text: "สาขาภาคใต้ (South branch — 15%)", correct: true },
+            { text: "สาขาภาคเหนือ (North region — 45%)", correct: false },
+            { text: "สาขาสำนักงานใหญ่ (Headquarters — 40%)", correct: false }
+          ]
+        },
+        miniGames: {
+          vocab: {
+            prompt: "จับคู่ Advanced Synonym ของคำว่า 'Mandate / Mandatory' (ข้อบังคับ/จำเป็นต้องทำ)",
+            pairs: [
+              { word: "Mandatory (adj.)", match: "Compulsory / Obligatory", correct: true },
+              { word: "Mandatory (adj.)", match: "Optional / Voluntary", correct: false },
+              { word: "Mandatory (adj.)", match: "Fragmented / Partial", correct: false }
+            ]
+          },
+          audio: {
+            partLabel: "TOEIC Part 4 (Short Talks + Graphic)",
+            sceneDesc: "📊 [กราฟยอดจัดส่ง: Gate A1 = Frankfurt | Gate B4 = Singapore | Gate C2 = Sydney]",
+            audioText: "Announcement: Passengers on Flight 402 to Singapore, please note that your departure gate has just been changed from B4 to C2 due to maintenance.",
+            options: [
+              { text: "(A) Gate C2 (เปลี่ยนจาก B4 ไปเป็น C2)", correct: true },
+              { text: "(B) Gate B4 (ประตูเดิมก่อนเปลี่ยน)", correct: false },
+              { text: "(C) Gate A1 (เที่ยวบินไปแฟรงก์เฟิร์ต)", correct: false }
+            ]
+          },
+          reading: {
+            question: "เชื่อมโยงเอกสาร 2 ชิ้น (อีเมล + ใบแจ้งหนี้): แตะประโยคที่อธิบายว่าทำไมยอดชำระจึงลดลง $200",
+            sentences: [
+              { text: "[Invoice #884] Conference Hall Rental: $2,000 | Audio Equipment: $300.", isTarget: false },
+              { text: "[Email from Venue] We apologize that the wireless microphones were delivered one hour late.", isTarget: false },
+              { text: "[Email Resolution] Consequently, we have waived $200 from your audio equipment fee on the final invoice.", isTarget: true },
+              { text: "Thank you for hosting your seminar with Grand Plaza Hotel.", isTarget: false }
+            ]
+          }
+        },
+        boss: {
+          title: "Boss Battle Lv.4: โครงสร้าง Participle & Inversion",
+          question: "_______ the updated safety regulations, the factory manager approved the expansion project.",
+          options: [
+            { text: "(A) Having reviewed (Reduced Adverbial Clause / Participle)", correct: true, word: "Having + V.3 (Participle Clause = หลังจากที่ได้ตรวจสอบแล้ว)" },
+            { text: "(B) Review (กริยาช่อง 1 ไม่มีตัวเชื่อม)", correct: false, word: "Having + V.3 (Participle Clause = หลังจากที่ได้ตรวจสอบแล้ว)" },
+            { text: "(C) To reviewing (ผิดไวยากรณ์)", correct: false, word: "Having + V.3 (Participle Clause = หลังจากที่ได้ตรวจสอบแล้ว)" }
+          ]
+        },
+        shadowingSentence: "Having reviewed the revised shipment schedule, we resolved the logistics bottleneck."
+      },
+      {
+        id: 5, role: "Level 5: Executive / VP", thaiRole: "ผู้บริหารระดับสูง", cefr: "C1 (WSE Lv. 18-20)", cefrShort: "C1", toeic: "945 – 990", subStages: "ด่านย่อย 18 – 20",
+        vocabDesc: "สำนวนธุรกิจระดับสูง (Business Idioms), ศัพท์กฎหมาย/การเงินเชิงลึก และความหมายแฝง",
+        listenDesc: "ฝึกฟังความเร็ว 1.25x ในทุกสำเนียง เก็บรายละเอียดคำถามเชิงอนุมาน (Inference Questions)",
+        readDesc: "Part 7 (Triple Passages): บริหารเวลาอ่านบทความยาว 3 ชิ้นเชื่อมโยงกันแบบจับเวลาจริง",
+        story: {
+          title: "Episode 18: การควบรวมกิจการระดับโลก (Global Merger Negotiation - 1.25x)",
+          scene: "ห้องประชุมบอร์ดบริหาร คุณต้องวิเคราะห์ถ้อยคำแฝงและเงื่อนไขทางกฎหมายในการเข้าซื้อกิจการ",
+          audioScript: "While the acquisition looks lucrative on paper, the regulatory compliance clauses in Article 9 remain a sticking point. Unless their legal counsel indemnifies us against prior liabilities, we cannot sign.",
+          contextQuestion: "คำถามเชิงอนุมาน (Inference): อะไรคืออุปสรรคสำคัญ (sticking point) ที่ทำให้ยังเซ็นสัญญาไม่ได้?",
+          options: [
+            { text: "ข้อตกลงเรื่องความรับผิดชอบทางกฎหมายย้อนหลัง (Prior liabilities indemnity)", correct: true },
+            { text: "ราคาหุ้นในตลาดหลักทรัพย์ลดลงต่ำกว่าเกณฑ์", correct: false },
+            { text: "ฝ่ายทรัพยากรบุคคลยังไม่ได้จัดทำตารางฝึกอบรม", correct: false }
+          ]
+        },
+        miniGames: {
+          vocab: {
+            prompt: "จับคู่ศัพท์กฎหมายและการเงินเชิงลึก: 'Indemnify' (ชดใช้ค่าเสียหาย/คุ้มครองความรับผิด)",
+            pairs: [
+              { word: "Indemnify (v.)", match: "Protect against legal responsibility or financial loss", correct: true },
+              { word: "Indemnify (v.)", match: "Postpone an annual shareholder meeting", correct: false },
+              { word: "Indemnify (v.)", match: "Advertise a new retail product line", correct: false }
+            ]
+          },
+          audio: {
+            partLabel: "TOEIC Inference Question (ความเร็ว 1.25x)",
+            sceneDesc: "🎧 ฟังความเห็นของผู้บริหารระดับสูงแล้วอนุมานสิ่งที่จะทำต่อไป",
+            audioText: "(1.25x Speed) Executive: Given the volatility in raw material costs, locking in a three-year fixed-rate supply agreement now would put us ahead of the curve.",
+            options: [
+              { text: "(A) ผู้พูดสนับสนุนให้ทำสัญญาล็อกราคาวัตถุดิบระยะยาวทันที", correct: true },
+              { text: "(B) ผู้พูดต้องการชะลอการสั่งซื้อวัตถุดิบออกไปอีก 3 ปี", correct: false },
+              { text: "(C) ผู้พูดเสนอให้ปิดสายการผลิตชั่วคราว", correct: false }
+            ]
+          },
+          reading: {
+            question: "เชื่อมโยง Triple Passages: แตะประโยคที่ยืนยันการยกเว้นค่าปรับ",
+            sentences: [
+              { text: "[Doc 1: Merger Notice] Phase 2 integration must conclude by November 15.", isTarget: false },
+              { text: "[Doc 2: Clause 12] Late handovers incur a 5% penalty unless caused by regulatory review.", isTarget: false },
+              { text: "[Doc 3: Counsel Email] Since the delay stemmed solely from the ministry's regulatory audit, Clause 12 exempts our firm from the 5% penalty.", isTarget: true },
+              { text: "The board will reconvene next Tuesday in Zurich.", isTarget: false }
+            ]
+          }
+        },
+        boss: {
+          title: "Boss Battle Lv.5: ปิดดีลผู้บริหาร (945–990 Executive Check)",
+          question: "_______ the complexity of the cross-border acquisition, both corporations completed the legal due diligence ahead of schedule.",
+          options: [
+            { text: "(A) Notwithstanding (บุพบทระดับสูง = แม้ว่าจะมี... / Despite)", correct: true, word: "Notwithstanding (prep./conj.) = แม้ว่าจะมี (Despite)" },
+            { text: "(B) Consequently (ดังนั้น)", correct: false, word: "Notwithstanding (prep./conj.) = แม้ว่าจะมี (Despite)" },
+            { text: "(C) Furthermore (ยิ่งไปกว่านั้น)", correct: false, word: "Notwithstanding (prep./conj.) = แม้ว่าจะมี (Despite)" }
+          ]
+        },
+        shadowingSentence: "Notwithstanding the complexity of the acquisition, we completed due diligence ahead of schedule."
+      }
+    ];
+
+    const ASSESSMENT_QUESTIONS = [
+      {
+        skill: "vocab",
+        skillName: "1. คลังคำศัพท์และโครงสร้าง (Vocabulary & Grammar - Part 5 & 6)",
+        gameName: "มินิเกมคัดแยกเอกสารด่วน (Word Sorting & Fill-in-the-blank)",
+        question: "Please submit your signed employment _______ to the Human Resources department by Friday.",
+        options: [
+          { text: "(A) contract (คำนาม = สัญญาจ้าง)", score: 90, correct: true },
+          { text: "(B) contracted (คำกริยาช่อง 2/3)", score: 45, correct: false },
+          { text: "(C) contracting (Participle)", score: 30, correct: false }
+        ]
+      },
+      {
+        skill: "listening",
+        skillName: "2. ทักษะการฟัง (Listening Comprehension - Part 1 - 4)",
+        gameName: "รับโทรศัพท์ลูกค้าและฟังข้อความเสียง (Voicemail & Accents)",
+        audioScript: "Voicemail (British Accent): Hi, this is Oliver from London Logistics. The shipment of office monitors will arrive at Warehouse 3 tomorrow morning at nine, not this afternoon. Please inform the receiving team.",
+        question: "ข้อความเสียง (Voicemail) นี้โทรมาแจ้งการเปลี่ยนแปลงเรื่องใด?",
+        options: [
+          { text: "(A) สินค้าจะมาถึงเช้าวันพรุ่งนี้เวลา 9:00 น. แทนที่จะเป็นบ่ายวันนี้", score: 88, correct: true },
+          { text: "(B) ขอยกเลิกการจัดส่งจอมอนิเตอร์ทั้งหมด", score: 40, correct: false },
+          { text: "(C) ขอเปลี่ยนสถานที่ส่งเป็นสำนักงานใหญ่ในลอนดอน", score: 35, correct: false }
+        ]
+      },
+      {
+        skill: "reading",
+        skillName: "3. ทักษะการอ่านเร็ว (Reading & Scanning - Part 7)",
+        gameName: "อ่านแชตองค์กรและประกาศบริษัทภายในเวลาจำกัด",
+        passage: "[Company Chat — IT Helpdesk]: The main email server will undergo scheduled maintenance tonight from 11:00 PM to 2:00 AM. Employees working with overseas clients should save draft files locally before 10:45 PM.",
+        question: "พนักงานที่ต้องติดต่อลูกค้าต่างประเทศควรทำอย่างไรก่อนเวลา 22:45 น.?",
+        options: [
+          { text: "(A) บันทึกไฟล์งานลงในเครื่องคอมพิวเตอร์ของตนเอง (Save draft files locally)", score: 92, correct: true },
+          { text: "(B) นำคอมพิวเตอร์ไปส่งซ่อมที่แผนก IT Helpdesk", score: 45, correct: false },
+          { text: "(C) เปลี่ยนรหัสผ่านอีเมลใหม่หลังเวลาตีสอง", score: 35, correct: false }
+        ]
+      }
+    ];
+
+    const state = {
+      activeTab: "assessment",
+      selectedLevelId: 1,
+      assessmentStep: 0,
+      scores: { vocab: 0, listening: 0, reading: 0 },
+      completedAssessment: false,
+      activeStageStep: 1,
+      audioSpeed: 1.0,
+      wrongWords: [
+        { word: "badge (n.)", meaning: "ป้ายชื่อ / บัตรประจำตัวผู้มาติดต่อ", level: "Level 1" }
+      ],
+      shadowingStatus: "พร้อมฝึกพูดออกเสียง (กดปุ่มไมโครโฟนเพื่อทดสอบ)",
+      commuteIndex: 0,
+      playerExp: 0,
+      playerGold: 50,
+      quests: [
+        { id: "assess", title: "🎯 สัมภาษณ์ Onboarding", desc: "ทำแบบประเมินทักษะก่อนเริ่มงานให้สำเร็จ", target: 1, current: 0, rewardExp: 100, rewardGold: 50, claimed: false },
+        { id: "shadow", title: "🎙️ Siri Shadowing", desc: "ฝึกออกเสียงตามเจ้าของภาษา (Shadowing)", target: 1, current: 0, rewardExp: 150, rewardGold: 100, claimed: false },
+        { id: "boss", title: "⚔️ Boss Battle", desc: "ตอบคำถามด่านบอสประจำตำแหน่งถูกต้อง", target: 1, current: 0, rewardExp: 200, rewardGold: 150, claimed: false },
+        { id: "word", title: "📘 คำศัพท์ประจำวัน", desc: "กดอ่านหรือเปิดดูคำศัพท์ประจำวันในหน้า iOS Feature", target: 1, current: 0, rewardExp: 50, rewardGold: 30, claimed: false }
+      ]
+    };
+
+    function speakEnglish(text, rate = 1.0) {
+      const island = document.getElementById("island-status");
+      if (island) {
+        island.textContent = "🔊 กำลังเล่นเสียง...";
+        setTimeout(() => { island.textContent = "● TOEIC RPG"; }, 2600);
+      }
+      try {
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = "en-US";
+          utter.rate = rate;
+          window.speechSynthesis.speak(utter);
+        }
+      } catch (e) {}
+    }
+
+    function toggleAudioSpeed() {
+      state.audioSpeed = state.audioSpeed === 1.0 ? 1.25 : 1.0;
+      renderViewport();
+    }
+
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabName);
+      });
+      renderViewport();
+    }
+
+    function selectLevel(levelId, openStage = false) {
+      state.selectedLevelId = levelId;
+      const lv = LEVELS.find(l => l.id === levelId) || LEVELS[0];
+      document.getElementById("hud-avatar").textContent = "Lv." + lv.id;
+      document.getElementById("hud-role").textContent = `${lv.role} (${lv.thaiRole})`;
+      document.getElementById("hud-cefr").textContent = "CEFR: " + lv.cefrShort;
+      document.getElementById("hud-toeic").textContent = "เป้า: " + lv.toeic;
+      renderCurriculumTable();
+      if (openStage) {
+        state.activeStageStep = 1;
+        switchTab("stage");
+      } else {
+        renderViewport();
+      }
+    }
+
+    function renderCurriculumTable() {
+      const tbody = document.getElementById("curriculum-table-body");
+      if (!tbody) return;
+      tbody.innerHTML = LEVELS.map(lv => {
+        const isCurrent = lv.id === state.selectedLevelId;
+        return `
+          <tr onclick="selectLevel(${lv.id}, true)" style="cursor:pointer; ${isCurrent ? 'background:#eff6ff;' : ''}">
+            <td>
+              <strong>${lv.role}</strong><br>
+              <span style="font-size:11px; color:var(--brand);">(${lv.thaiRole}) ${isCurrent ? '● กำลังเลือก' : ''}</span>
+            </td>
+            <td><span class="tag tag-purple">${lv.cefr}</span></td>
+            <td><strong style="color:var(--brand-dark);">${lv.toeic}</strong></td>
+            <td>${lv.vocabDesc}</td>
+            <td>${lv.listenDesc}</td>
+            <td>${lv.readDesc}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderViewport() {
+      const container = document.getElementById("ios-viewport");
+      if (!container) return;
+
+      if (state.activeTab === "assessment") {
+        container.innerHTML = renderAssessmentView();
+      } else if (state.activeTab === "roadmap") {
+        container.innerHTML = renderRoadmapView();
+      } else if (state.activeTab === "stage") {
+        container.innerHTML = renderStageView();
+      } else if (state.activeTab === "ios") {
+        const qWord = state.quests.find(q => q.id === "word");
+        if (qWord && qWord.current < qWord.target) {
+          qWord.current = 1;
+        }
+        container.innerHTML = renderIosFeaturesView();
+      } else if (state.activeTab === "quests") {
+        container.innerHTML = renderQuestsView();
+      }
+      updateHUD();
+    }
+
+    function updateHUD() {
+      const expEl = document.getElementById("hud-exp");
+      const goldEl = document.getElementById("hud-gold");
+      if (expEl) expEl.textContent = `✨ EXP: ${state.playerExp}`;
+      if (goldEl) goldEl.textContent = `🪙 Gold: ${state.playerGold}`;
+    }
+
+    function renderAssessmentView() {
+      if (state.assessmentStep < ASSESSMENT_QUESTIONS.length) {
+        const q = ASSESSMENT_QUESTIONS[state.assessmentStep];
+        return `
+          <div class="ios-card">
+            <div class="ios-card-header">
+              <span class="tag tag-blue">Pre-Assessment (CAT)</span>
+              <span style="font-size:12px; font-weight:700; color:var(--muted);">ด่านสัมภาษณ์ ${state.assessmentStep + 1} / 3</span>
+            </div>
+            <h3 class="ios-card-title">🎯 The Onboarding Interview</h3>
+            <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">
+              จำลองวันสัมภาษณ์งานวันแรกด้วยระบบ Computer Adaptive Testing (CAT)
+            </p>
+          </div>
+
+          <div class="ios-card">
+            <div style="font-size:12px; font-weight:700; color:var(--accent); margin-bottom:4px;">${q.skillName}</div>
+            <div style="font-size:11px; color:var(--muted); margin-bottom:10px;">รูปแบบ: ${q.gameName}</div>
+
+            ${q.audioScript ? `
+              <div class="audio-bar">
+                <button type="button" class="audio-play-btn" onclick="speakEnglish('${q.audioScript.replace(/'/g, "\\'")}', ${state.audioSpeed})" title="ฟังเสียง">▶</button>
+                <div class="audio-wave">
+                  <div style="font-weight:700; color:#fff;">กดฟัง Voicemail ลูกค้า</div>
+                  <div style="font-size:11px; margin-top:2px;">"${q.audioScript}"</div>
+                </div>
+              </div>
+            ` : ""}
+
+            ${q.passage ? `
+              <div class="email-box" style="margin-bottom:10px;">
+                ${q.passage}
+              </div>
+            ` : ""}
+
+            <div style="font-size:13.5px; font-weight:700; color:var(--ink); margin-top:6px;">
+              ${q.question}
+            </div>
+
+            <div class="quiz-options">
+              ${q.options.map((opt, idx) => `
+                <button type="button" class="quiz-option" onclick="answerAssessment(${idx})">
+                  <span>${opt.text}</span>
+                  <span style="color:var(--brand); font-weight:700;">เลือก →</span>
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      const vScore = state.scores.vocab || 75;
+      const lScore = state.scores.listening || 70;
+      const rScore = state.scores.reading || 80;
+      const avg = Math.round((vScore + lScore + rScore) / 3);
+
+      let recLevelId = 1;
+      if (avg >= 88) recLevelId = 4;
+      else if (avg >= 75) recLevelId = 3;
+      else if (avg >= 55) recLevelId = 2;
+
+      const recLevel = LEVELS.find(l => l.id === recLevelId) || LEVELS[0];
+
+      return `
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <span class="tag tag-green">ผลการประเมินทักษะ (CAT Result)</span>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="resetAssessment()">ประเมินใหม่</button>
+          </div>
+          <h3 class="ios-card-title">📊 Skill Radar Chart ของคุณ</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 10px;">
+            วิเคราะห์แยก 3 ทักษะหลักตามเกณฑ์ AUA-Oxford Placement &amp; WSE CEFR
+          </p>
+
+          <div class="radar-box">
+            ${buildRadarSvg(vScore, lScore, rScore)}
+            <div style="display:flex; gap:12px; font-size:11px; font-weight:700; margin-top:6px;">
+              <span style="color:#007aff;">● คำศัพท์: ${vScore}%</span>
+              <span style="color:#5856d6;">● การฟัง: ${lScore}%</span>
+              <span style="color:#10b981;">● การอ่าน: ${rScore}%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ios-card" style="border: 2px solid var(--brand);">
+          <div class="tag tag-blue" style="margin-bottom:6px;">ตำแหน่งเริ่มต้นที่แนะนำ</div>
+          <div style="font-size:16px; font-weight:800; color:var(--ink);">${recLevel.role} (${recLevel.thaiRole})</div>
+          <div style="font-size:12px; color:var(--muted); margin:4px 0 12px;">
+            ระดับ <strong>${recLevel.cefr}</strong> • เป้าหมายคะแนน TOEIC <strong>${recLevel.toeic}</strong>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button type="button" class="btn btn-primary" onclick="selectLevel(${recLevel.id}, true)">
+              🎮 เริ่มเล่นด่านของ ${recLevel.role} ทันที
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="switchTab('roadmap')">
+              🗺️ ดูแผนที่ความก้าวหน้าทั้ง 5 เลเวล
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function answerAssessment(optionIdx) {
+      const q = ASSESSMENT_QUESTIONS[state.assessmentStep];
+      const chosen = q.options[optionIdx];
+      state.scores[q.skill] = chosen.score;
+      state.assessmentStep += 1;
+
+      if (state.assessmentStep >= ASSESSMENT_QUESTIONS.length) {
+        state.completedAssessment = true;
+        const qAssess = state.quests.find(item => item.id === "assess");
+        if (qAssess) qAssess.current = 1;
+        const avg = Math.round((state.scores.vocab + state.scores.listening + state.scores.reading) / 3);
+        let recLevelId = 1;
+        if (avg >= 88) recLevelId = 4;
+        else if (avg >= 75) recLevelId = 3;
+        else if (avg >= 55) recLevelId = 2;
+        selectLevel(recLevelId, false);
+        const statusEl = document.getElementById("hud-status-text");
+        if (statusEl) statusEl.textContent = `ประเมินแล้ว: เฉลี่ย ${avg}%`;
+      }
+      renderViewport();
+    }
+
+    function resetAssessment() {
+      state.assessmentStep = 0;
+      state.scores = { vocab: 0, listening: 0, reading: 0 };
+      renderViewport();
+    }
+
+    function buildRadarSvg(v, l, r) {
+      const cx = 110, cy = 95, maxR = 64;
+      const pt = (val, deg) => {
+        const rad = (deg * Math.PI) / 180;
+        const dist = (val / 100) * maxR;
+        return `${(cx + dist * Math.cos(rad)).toFixed(1)},${(cy + dist * Math.sin(rad)).toFixed(1)}`;
+      };
+      const pVocab = pt(v, -90);
+      const pListen = pt(l, 30);
+      const pRead = pt(r, 150);
+
+      const grid100 = `${pt(100, -90)} ${pt(100, 30)} ${pt(100, 150)}`;
+      const grid60 = `${pt(60, -90)} ${pt(60, 30)} ${pt(60, 150)}`;
+      const grid30 = `${pt(30, -90)} ${pt(30, 30)} ${pt(30, 150)}`;
+
+      return `
+        <svg width="220" height="175" viewBox="0 0 220 175" aria-label="Skill Radar Chart">
+          <polygon points="${grid100}" fill="none" stroke="#cbd5e1" stroke-width="1" />
+          <polygon points="${grid60}" fill="none" stroke="#cbd5e1" stroke-dasharray="3,3" stroke-width="1" />
+          <polygon points="${grid30}" fill="none" stroke="#cbd5e1" stroke-dasharray="3,3" stroke-width="1" />
+          <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - maxR}" stroke="#cbd5e1" stroke-width="1" />
+          <line x1="${cx}" y1="${cy}" x2="${(cx + maxR * Math.cos(Math.PI/6)).toFixed(1)}" y2="${(cy + maxR * Math.sin(Math.PI/6)).toFixed(1)}" stroke="#cbd5e1" stroke-width="1" />
+          <line x1="${cx}" y1="${cy}" x2="${(cx + maxR * Math.cos(5*Math.PI/6)).toFixed(1)}" y2="${(cy + maxR * Math.sin(5*Math.PI/6)).toFixed(1)}" stroke="#cbd5e1" stroke-width="1" />
+          <polygon points="${pVocab} ${pListen} ${pRead}" fill="rgba(0, 122, 255, 0.25)" stroke="#007aff" stroke-width="2.5" />
+          <circle cx="${pVocab.split(',')[0]}" cy="${pVocab.split(',')[1]}" r="4" fill="#007aff" />
+          <circle cx="${pListen.split(',')[0]}" cy="${pListen.split(',')[1]}" r="4" fill="#5856d6" />
+          <circle cx="${pRead.split(',')[0]}" cy="${pRead.split(',')[1]}" r="4" fill="#10b981" />
+          <text x="${cx}" y="18" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">Vocabulary (${v}%)</text>
+          <text x="176" y="148" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">Listening (${l}%)</text>
+          <text x="44" y="148" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">Reading (${r}%)</text>
+        </svg>
+      `;
+    }
+
+    function renderRoadmapView() {
+      return `
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <span class="tag tag-purple">5-Tier Career RPG</span>
+            <span style="font-size:11px; font-weight:700; color:var(--muted);">20 ด่านย่อย (CEFR Pre-A1 – C1)</span>
+          </div>
+          <h3 class="ios-card-title">🗺️ เส้นทางเลื่อนตำแหน่ง (Level Progression)</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 0;">
+            แตะเลือกตำแหน่งที่ต้องการเพื่อดูทักษะ และกดเข้าเล่นด่านจำลอง
+          </p>
+        </div>
+
+        ${LEVELS.map(lv => {
+          const isSelected = lv.id === state.selectedLevelId;
+          return `
+            <div class="level-node ${isSelected ? 'active-level' : ''}" onclick="selectLevel(${lv.id}, false)">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
+                <span class="tag ${isSelected ? 'tag-blue' : 'tag-purple'}">${lv.cefr} • ${lv.subStages}</span>
+                <span style="font-size:12px; font-weight:800; color:var(--brand-dark);">TOEIC ${lv.toeic}</span>
+              </div>
+              <div style="font-size:15px; font-weight:800; color:var(--ink);">
+                ${lv.role} <span style="font-weight:600; color:var(--muted);">(${lv.thaiRole})</span>
+              </div>
+              <div style="font-size:12px; color:var(--muted); margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+                <div><strong>📘 คำศัพท์:</strong> ${lv.vocabDesc}</div>
+                <div><strong>🎧 การฟัง:</strong> ${lv.listenDesc}</div>
+                <div><strong>📄 การอ่าน:</strong> ${lv.readDesc}</div>
+              </div>
+              <div style="margin-top:10px;">
+                <button type="button" class="btn ${isSelected ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="event.stopPropagation(); selectLevel(${lv.id}, true)">
+                  🎮 เข้าเล่นด่าน ${lv.role} (4 ขั้นตอน)
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      `;
+    }
+
+    function renderStageView() {
+      const lv = LEVELS.find(l => l.id === state.selectedLevelId) || LEVELS[0];
+      return `
+        <div class="ios-card" style="padding:10px 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div>
+              <span class="tag tag-blue">${lv.role}</span>
+              <span style="font-size:11px; font-weight:700; color:var(--muted); margin-left:4px;">เป้า TOEIC ${lv.toeic}</span>
+            </div>
+            <select aria-label="เปลี่ยนเลเวล" onchange="selectLevel(Number(this.value), true)" style="font-size:11px; padding:4px 6px; border-radius:6px; border:1px solid var(--border); font-family:inherit;">
+              ${LEVELS.map(item => `<option value="${item.id}" ${item.id === lv.id ? 'selected' : ''}>Lv.${item.id} (${item.cefrShort})</option>`).join("")}
+            </select>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="step-pill ${state.activeStageStep === 1 ? 'active' : ''}" onclick="setStageStep(1)">1. Story</button>
+            <button type="button" class="step-pill ${state.activeStageStep === 2 ? 'active' : ''}" onclick="setStageStep(2)">2. Mini-Games</button>
+            <button type="button" class="step-pill ${state.activeStageStep === 3 ? 'active' : ''}" onclick="setStageStep(3)">3. Boss Battle</button>
+            <button type="button" class="step-pill ${state.activeStageStep === 4 ? 'active' : ''}" onclick="setStageStep(4)">4. AI Coach</button>
+          </div>
+        </div>
+
+        ${state.activeStageStep === 1 ? renderStep1Story(lv) : ""}
+        ${state.activeStageStep === 2 ? renderStep2MiniGames(lv) : ""}
+        ${state.activeStageStep === 3 ? renderStep3Boss(lv) : ""}
+        ${state.activeStageStep === 4 ? renderStep4AiCoach(lv) : ""}
+      `;
+    }
+
+    function setStageStep(stepNum) {
+      state.activeStageStep = stepNum;
+      renderViewport();
+    }
+
+    function renderStep1Story(lv) {
+      return `
+        <div class="ios-card">
+          <span class="tag tag-purple">Step 1 • Story Episode (AUA + WSE Style)</span>
+          <h3 class="ios-card-title" style="margin-top:6px;">🎬 ${lv.story.title}</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 10px;">
+            <strong>Natural Approach:</strong> ฟังและจับบริบทจากเหตุการณ์จริงก่อนโดยไม่ต้องเปิดดิกชันนารี
+          </p>
+
+          <div style="background:#f8fafc; border-left:3px solid var(--accent); padding:8px 10px; border-radius:6px; font-size:12px; color:var(--ink); margin-bottom:10px;">
+            <strong>สถานการณ์:</strong> ${lv.story.scene}
+          </div>
+
+          <div class="audio-bar">
+            <button type="button" class="audio-play-btn" onclick="speakEnglish('${lv.story.audioScript.replace(/'/g, "\\'")}', ${state.audioSpeed})">▶</button>
+            <div class="audio-wave">
+              <div style="font-weight:700; color:#fff;">กดฟังบทสนทนา (${state.audioSpeed}x)</div>
+              <div style="font-size:11px; margin-top:2px;">"${lv.story.audioScript}"</div>
+            </div>
+            <button type="button" class="speed-toggle" onclick="toggleAudioSpeed()">${state.audioSpeed}x</button>
+          </div>
+
+          <div style="font-size:13px; font-weight:700; margin-top:10px;">${lv.story.contextQuestion}</div>
+          <div class="quiz-options" id="story-options">
+            ${lv.story.options.map(opt => `
+              <button type="button" class="quiz-option" onclick="checkOption(this, ${opt.correct}, '')">
+                <span>${opt.text}</span>
+              </button>
+            `).join("")}
+          </div>
+
+          <div style="margin-top:12px;">
+            <button type="button" class="btn btn-primary" onclick="setStageStep(2)">ไปต่อ Step 2: Skill Mini-Games →</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStep2MiniGames(lv) {
+      return `
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <span class="tag tag-blue">Mini-Game 1 • Vocab Match</span>
+          </div>
+          <div style="font-size:13px; font-weight:700;">${lv.miniGames.vocab.prompt}</div>
+          <div class="quiz-options">
+            ${lv.miniGames.vocab.pairs.map(p => `
+              <button type="button" class="quiz-option" onclick="checkOption(this, ${p.correct}, '${p.word} = ${p.match}')">
+                <span><strong>${p.word}</strong> → ${p.match}</span>
+              </button>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <span class="tag tag-purple">Mini-Game 2 • Audio Detective</span>
+          </div>
+          <div style="font-size:12px; font-weight:700; color:var(--accent);">${lv.miniGames.audio.partLabel}</div>
+          <div style="font-size:12px; color:var(--muted); margin:4px 0;">${lv.miniGames.audio.sceneDesc}</div>
+
+          <div class="audio-bar">
+            <button type="button" class="audio-play-btn" onclick="speakEnglish('${lv.miniGames.audio.audioText.replace(/'/g, "\\'")}', ${state.audioSpeed})">▶</button>
+            <div class="audio-wave">
+              <div style="font-weight:700; color:#fff;">กดฟังโจทย์ (${state.audioSpeed}x)</div>
+              <div style="font-size:11px;">"${lv.miniGames.audio.audioText}"</div>
+            </div>
+            <button type="button" class="speed-toggle" onclick="toggleAudioSpeed()">${state.audioSpeed}x</button>
+          </div>
+
+          <div class="quiz-options">
+            ${lv.miniGames.audio.options.map(opt => `
+              <button type="button" class="quiz-option" onclick="checkOption(this, ${opt.correct}, '')">
+                <span>${opt.text}</span>
+              </button>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <span class="tag tag-amber">Mini-Game 3 • Speed Highlighter</span>
+          </div>
+          <div style="font-size:13px; font-weight:700; margin-bottom:6px;">🖐️ ${lv.miniGames.reading.question}</div>
+          <div class="email-box">
+            ${lv.miniGames.reading.sentences.map(s => `
+              <span class="email-sentence" onclick="highlightSentence(this, ${s.isTarget})">${s.text}</span>
+            `).join(" ")}
+          </div>
+          <div id="highlight-feedback" style="font-size:12px; font-weight:700; margin-top:8px; color:var(--muted);">
+            แตะประโยคที่เป็นคำตอบในกรอบเอกสารด้านบน
+          </div>
+          <div style="margin-top:12px;">
+            <button type="button" class="btn btn-primary" onclick="setStageStep(3)">ไปต่อ Step 3: Boss Battle →</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStep3Boss(lv) {
+      return `
+        <div class="ios-card" style="border:2px solid var(--accent);">
+          <div class="ios-card-header">
+            <span class="tag tag-purple">Step 3 • Boss Battle</span>
+            <span style="font-size:11px; font-weight:700; color:var(--danger);">⏱️ จำลองข้อสอบจริง</span>
+          </div>
+          <h3 class="ios-card-title">⚔️ ${lv.boss.title}</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 10px;">
+            ผ่านด่านบอสเพื่อเลื่อนขั้น (Promote)
+          </p>
+
+          <div style="background:var(--surface-soft); padding:12px; border-radius:10px; border:1px solid var(--border); font-size:13.5px; font-weight:700;">
+            ${lv.boss.question}
+          </div>
+
+          <div class="quiz-options">
+            ${lv.boss.options.map(opt => `
+              <button type="button" class="quiz-option" onclick="checkOption(this, ${opt.correct}, '${opt.word.replace(/'/g, "\\'")}')">
+                <span>${opt.text}</span>
+              </button>
+            `).join("")}
+          </div>
+
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button type="button" class="btn btn-primary" onclick="setStageStep(4)">ดูผลสรุป Step 4: AI Coach Review →</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStep4AiCoach(lv) {
+      const nextLvId = lv.id < 5 ? lv.id + 1 : 5;
+      return `
+        <div class="ios-card">
+          <span class="tag tag-green">Step 4 • AI Coach Review</span>
+          <h3 class="ios-card-title" style="margin-top:6px;">🤖 สรุปจุดอ่อน &amp; Smart Flashcards</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 10px;">
+            ระบบ Spaced Repetition ดึงคำศัพท์ที่คุณตอบผิดมาให้ทบทวน
+          </p>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+            ${state.wrongWords.map(item => `
+              <div style="background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:10px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-size:13px; font-weight:700; color:var(--ink);">${item.word}</div>
+                  <div style="font-size:11.5px; color:var(--muted);">${item.meaning}</div>
+                </div>
+                <span class="tag tag-amber">${item.level}</span>
+              </div>
+            `).join("")}
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            ${lv.id < 5 ? `
+              <button type="button" class="btn btn-primary" onclick="selectLevel(${nextLvId}, true)">
+                🚀 เลื่อนขั้น (Promote) สู่ Level ${nextLvId}
+              </button>
+            ` : `
+              <button type="button" class="btn btn-primary" onclick="switchTab('roadmap')">
+                🏆 คุณอยู่ระดับสูงสุด Executive / VP (945–990)
+              </button>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderIosFeaturesView() {
+      const lv = LEVELS.find(l => l.id === state.selectedLevelId) || LEVELS[0];
+      return `
+        <div class="ios-card">
+          <span class="tag tag-blue">iOS Exclusive 1</span>
+          <h3 class="ios-card-title" style="margin-top:4px;">📱 iOS Lock Screen Widgets</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 10px;">
+            แสดงคำศัพท์ประจำวันและจำนวนวันต่อเนื่อง (Streak)
+          </p>
+
+          <div class="ios-lockscreen-mock">
+            <div style="text-align:center; font-size:11px; opacity:0.85;">วันศุกร์ที่ 21 พฤศจิกายน</div>
+            <div class="lock-time">09:41</div>
+            <div class="widget-grid">
+              <div class="ios-widget">
+                <div style="font-weight:700; color:#38bdf8;">🔥 LEARNING STREAK</div>
+                <div style="font-size:18px; font-weight:800; margin:2px 0;">14 วันติดกัน</div>
+                <div style="opacity:0.85;">เป้า TOEIC: ${lv.toeic}</div>
+              </div>
+              <div class="ios-widget">
+                <div style="font-weight:700; color:#a78bfa;">📘 WORD OF THE DAY</div>
+                <div style="font-size:13px; font-weight:800; margin:2px 0;">Reschedule (v.)</div>
+                <div style="opacity:0.85;">เลื่อนนัด / จัดตารางใหม่</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ios-card">
+          <span class="tag tag-purple">iOS Exclusive 2</span>
+          <h3 class="ios-card-title" style="margin-top:4px;">🎙️ Siri Shadowing</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 8px;">
+            ฝึกออกเสียงประโยคตามเจ้าของภาษา
+          </p>
+
+          <div style="background:var(--surface-soft); border:1px solid var(--border); border-radius:10px; padding:10px; font-size:12.5px; font-weight:700; color:var(--ink);">
+            "${lv.shadowingSentence}"
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button type="button" class="btn btn-secondary" style="flex:1;" onclick="speakEnglish('${lv.shadowingSentence.replace(/'/g, "\\'")}', 1.0)">
+              🔊 ฟังต้นฉบับ
+            </button>
+            <button type="button" class="btn btn-primary" style="flex:1;" onclick="simulateShadowing()">
+              🎤 กดพูดตาม (Shadowing)
+            </button>
+          </div>
+          <div style="font-size:12px; font-weight:600; color:var(--brand-dark); margin-top:8px;">
+            ${state.shadowingStatus}
+          </div>
+        </div>
+
+        <div class="ios-card">
+          <span class="tag tag-green">iOS Exclusive 3</span>
+          <h3 class="ios-card-title" style="margin-top:4px;">🚇 Offline Commute Mode</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 8px;">
+            โหมดฝึกฟังมือเดียวบนรถไฟฟ้า
+          </p>
+          <div class="audio-bar">
+            <button type="button" class="audio-play-btn" onclick="speakEnglish('${lv.story.audioScript.replace(/'/g, "\\'")}', ${state.audioSpeed})">▶</button>
+            <div class="audio-wave">
+              <div style="font-weight:700; color:#fff;">Offline Audio Pack • ${lv.role}</div>
+              <div style="font-size:11px;">เล่นเสียงไม่ต้องต่อเน็ต</div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+            <button type="button" class="btn btn-secondary" style="padding:14px;" onclick="speakEnglish('${lv.story.audioScript.replace(/'/g, "\\'")}', 1.0)">
+              🔁 ฟังซ้ำอีกครั้ง
+            </button>
+            <button type="button" class="btn btn-primary" style="padding:14px;" onclick="switchTab('stage')">
+              ✅ ตอบควิซด่วน
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderQuestsView() {
+      const completedCount = state.quests.filter(q => q.current >= q.target).length;
+      const totalCount = state.quests.length;
+
+      return `
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <span class="tag tag-blue">Daily Quests</span>
+            <span style="font-size:11px; font-weight:700; color:var(--muted);">รีเซ็ตใน: 14ชม.</span>
+          </div>
+          <h3 class="ios-card-title">📜 เควสต์รายวัน (Daily Career Quests)</h3>
+          <p style="font-size:12px; color:var(--muted); margin:4px 0 10px;">
+            ทำภารกิจให้สำเร็จเพื่อรับแต้ม EXP และ Gold เลื่อนตำแหน่ง
+          </p>
+          <div style="font-size:12px; font-weight:700; color:var(--brand-dark); display:flex; justify-content:space-between; align-items:center; background:var(--brand-light); padding:8px 12px; border-radius:10px;">
+            <span>ความก้าวหน้าเควสต์:</span>
+            <span>${completedCount} / ${totalCount} สำเร็จ</span>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          ${state.quests.map(q => {
+            const isCompleted = q.current >= q.target;
+            const progressPct = Math.min(100, Math.round((q.current / q.target) * 100));
+            
+            let btnHtml = "";
+            if (q.claimed) {
+              btnHtml = `<button type="button" class="btn btn-secondary btn-sm" disabled style="background:#f1f5f9; color:var(--subtle); border:none; padding:4px 8px;">✅ รับแล้ว</button>`;
+            } else if (isCompleted) {
+              btnHtml = `<button type="button" class="btn btn-primary btn-sm" style="background:var(--success); border-color:var(--success); box-shadow:0 4px 10px rgba(52, 199, 89, 0.2); padding:4px 10px;" onclick="claimQuestReward('${q.id}')">🎁 รับรางวัล</button>`;
+            } else {
+              btnHtml = `<button type="button" class="btn btn-secondary btn-sm" disabled style="opacity:0.6; cursor:not-allowed; padding:4px 8px;">${q.current}/${q.target}</button>`;
+            }
+
+            return `
+              <div class="quest-item ${isCompleted && !q.claimed ? 'completed-ready' : ''} ${q.claimed ? 'claimed' : ''}">
+                <div class="quest-header">
+                  <div style="flex: 1; padding-right: 8px;">
+                    <div class="quest-title">${q.title}</div>
+                    <div class="quest-desc">${q.desc}</div>
+                  </div>
+                  <div>
+                    ${btnHtml}
+                  </div>
+                </div>
+                <div class="quest-progress-bar">
+                  <div class="quest-progress-fill ${isCompleted ? 'done' : ''}" style="width: ${progressPct}%"></div>
+                </div>
+                <div class="quest-rewards">
+                  <span style="color:var(--muted); font-size:11px;">รางวัล:</span>
+                  <span class="quest-reward-pill exp">✨ +${q.rewardExp} EXP</span>
+                  <span class="quest-reward-pill gold">🪙 +${q.rewardGold} Gold</span>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function claimQuestReward(questId) {
+      const q = state.quests.find(item => item.id === questId);
+      if (q && q.current >= q.target && !q.claimed) {
+        q.claimed = true;
+        state.playerExp += q.rewardExp;
+        state.playerGold += q.rewardGold;
+        
+        const island = document.getElementById("island-status");
+        if (island) {
+          island.textContent = `🎁 +${q.rewardExp} EXP !`;
+          island.style.color = "#34c759";
+          setTimeout(() => { 
+            island.textContent = "● TOEIC RPG"; 
+            island.style.color = "#38bdf8";
+          }, 2500);
+        }
+
+        updateHUD();
+        renderViewport();
+      }
+    }
+
+    function checkOption(btnEl, isCorrect, vocabNote) {
+      const parent = btnEl.parentElement;
+      parent.querySelectorAll(".quiz-option").forEach(b => {
+        b.classList.remove("correct", "wrong");
+      });
+
+      if (isCorrect) {
+        btnEl.classList.add("correct");
+        if (!btnEl.innerHTML.includes("✅")) {
+          btnEl.innerHTML += ` <span>✅ ถูกต้อง!</span>`;
+        }
+        if (state.activeStageStep === 3) {
+          const qBoss = state.quests.find(item => item.id === "boss");
+          if (qBoss) qBoss.current = 1;
+        }
+      } else {
+        btnEl.classList.add("wrong");
+        if (!btnEl.innerHTML.includes("❌")) {
+          btnEl.innerHTML += ` <span>❌ ลองใหม่</span>`;
+        }
+        if (vocabNote) {
+          const parts = vocabNote.split("=");
+          const w = (parts[0] || vocabNote).trim();
+          const m = (parts[1] || "คำศัพท์ที่ควรทบทวน").trim();
+          const exists = state.wrongWords.some(item => item.word === w);
+          if (!exists) {
+            state.wrongWords.unshift({
+              word: w,
+              meaning: m,
+              level: "Level " + state.selectedLevelId
+            });
+          }
+        }
+      }
+    }
+
+    function highlightSentence(spanEl, isTarget) {
+      const box = spanEl.parentElement;
+      box.querySelectorAll(".email-sentence").forEach(s => {
+        s.classList.remove("highlighted-correct", "highlighted-wrong");
+      });
+      const fb = document.getElementById("highlight-feedback");
+      if (isTarget) {
+        spanEl.classList.add("highlighted-correct");
+        if (fb) {
+          fb.style.color = "#15803d";
+          fb.textContent = "✅ ไฮไลต์ถูกต้อง!";
+        }
+      } else {
+        spanEl.classList.add("highlighted-wrong");
+        if (fb) {
+          fb.style.color = "#b91c1c";
+          fb.textContent = "❌ ประโยคนี้ยังไม่ใช่คำตอบ";
+        }
+      }
+    }
+
+    function simulateShadowing() {
+      state.shadowingStatus = "🎙️ ความแม่นยำสำเนียง 94% (ยอดเยี่ยม! ผ่านเกณฑ์)";
+      const qShadow = state.quests.find(item => item.id === "shadow");
+      if (qShadow) qShadow.current = 1;
+      renderViewport();
+    }
+
+    // Start App
+    renderCurriculumTable();
+    renderViewport();
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "part": 5,
+    "level": 1,
+    "category": "present_simple",
+    "question": "The Human Resources division ______ new employment contracts every morning.",
+    "options": [
+      { "text": "(A) prepare", "is_correct": false },
+      { "text": "(B) prepares", "is_correct": true },
+      { "text": "(C) preparing", "is_correct": false },
+      { "text": "(D) is prepared", "is_correct": false }
+    ],
+    "explanation": "คีย์เวิร์ด every morning ประธานเป็นเอกพจน์ กริยาต้องเติม -s"
+  }
+]

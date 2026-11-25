@@ -8,9 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="TOEIC RPG">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#007aff">
-
   <title>The Global Intern — TOEIC Career RPG</title>
-
   <style>
     :root {
       --bg: #f2f2f7;
@@ -33,12 +31,10 @@
       --danger-light: #fee2e2;
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Sarabun", "Noto Sans Thai", sans-serif;
     }
-
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
-
     html, body {
       margin: 0;
       padding: 0;
@@ -49,7 +45,6 @@
       background: var(--bg);
       color: var(--ink);
     }
-
     .app-shell {
       display: flex;
       flex-direction: column;
@@ -58,7 +53,6 @@
       height: 100dvh;
       background: var(--bg);
     }
-
     /* Top Bar with iOS Safe Area */
     .app-topbar {
       background: rgba(255, 255, 255, 0.94);
@@ -75,19 +69,16 @@
       gap: 6px;
       z-index: 30;
     }
-
     .topbar-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
     .topbar-brand {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
     .topbar-logo {
       width: 28px;
       height: 28px;
@@ -100,13 +91,11 @@
       font-weight: 800;
       font-size: 13px;
     }
-
     .topbar-title {
       font-size: 15px;
       font-weight: 800;
       color: var(--ink);
     }
-
     .pill-info-btn {
       background: var(--surface-soft);
       border: 1px solid var(--border);
@@ -117,7 +106,6 @@
       cursor: pointer;
       color: var(--brand);
     }
-
     /* Player Status HUD */
     .player-hud {
       display: flex;
@@ -129,13 +117,11 @@
       border-radius: 12px;
       border: 1px solid var(--border);
     }
-
     .hud-left {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
     .hud-avatar {
       width: 32px;
       height: 32px;
@@ -149,18 +135,15 @@
       font-size: 12px;
       flex-shrink: 0;
     }
-
     .hud-role {
       font-size: 12px;
       font-weight: 700;
       line-height: 1.2;
     }
-
     .hud-cefr {
       font-size: 10px;
       color: var(--muted);
     }
-
     .hud-badges {
       display: flex;
       flex-direction: column;
@@ -169,19 +152,16 @@
       font-size: 10.5px;
       font-weight: 700;
     }
-
     .stat-row {
       display: flex;
       gap: 6px;
     }
-
     .stat-chip {
       padding: 2px 6px;
       border-radius: 6px;
       background: var(--brand-light);
       color: var(--brand-dark);
     }
-
     /* App Content */
     .app-content {
       flex: 1;
@@ -192,7 +172,6 @@
       flex-direction: column;
       gap: 12px;
     }
-
     /* Bottom Tab Navigation */
     .app-tabbar {
       background: rgba(255, 255, 255, 0.94);
@@ -208,7 +187,6 @@
       flex-shrink: 0;
       z-index: 30;
     }
-
     .tab-btn {
       background: none;
       border: none;
@@ -225,16 +203,13 @@
       padding: 3px 2px;
       border-radius: 8px;
     }
-
     .tab-btn.active {
       color: var(--brand);
     }
-
     .tab-icon {
       font-size: 18px;
       line-height: 1;
     }
-
     /* Card & Components */
     .ios-card {
       background: var(--surface);
@@ -243,7 +218,6 @@
       box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
       border: 1px solid var(--border);
     }
-
     .ios-card-header {
       display: flex;
       align-items: center;
@@ -251,14 +225,12 @@
       gap: 8px;
       margin-bottom: 8px;
     }
-
     .ios-card-title {
       margin: 0;
       font-size: 15px;
       font-weight: 700;
       color: var(--ink);
     }
-
     .tag {
       display: inline-block;
       padding: 2px 7px;
@@ -266,12 +238,10 @@
       font-size: 10px;
       font-weight: 700;
     }
-
     .tag-blue { background: var(--brand-light); color: var(--brand-dark); }
     .tag-purple { background: var(--accent-light); color: var(--accent); }
     .tag-green { background: var(--success-light); color: #15803d; }
     .tag-amber { background: var(--warning-light); color: #b45309; }
-
     .btn {
       font-family: inherit;
       font-size: 13.5px;
@@ -287,37 +257,31 @@
       width: 100%;
       text-align: center;
     }
-
     .btn:active {
       transform: scale(0.98);
     }
-
     .btn-primary {
       background: var(--brand);
       color: #fff;
       box-shadow: 0 3px 8px rgba(0, 122, 255, 0.25);
     }
-
     .btn-secondary {
       background: var(--surface-soft);
       color: var(--ink);
       border: 1px solid var(--border);
     }
-
     .btn-sm {
       padding: 6px 10px;
       font-size: 11.5px;
       border-radius: 8px;
       width: auto;
     }
-
     .quiz-options {
       display: flex;
       flex-direction: column;
       gap: 8px;
       margin-top: 10px;
     }
-
     .quiz-option {
       background: var(--surface-soft);
       border: 1.5px solid var(--border);
@@ -333,20 +297,17 @@
       justify-content: space-between;
       gap: 8px;
     }
-
     .quiz-option.correct {
       border-color: var(--success);
       background: var(--success-light);
       color: #14532d;
       font-weight: 600;
     }
-
     .quiz-option.wrong {
       border-color: var(--danger);
       background: var(--danger-light);
       color: #7f1d1d;
     }
-
     .step-nav {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -356,7 +317,6 @@
       border-radius: 10px;
       margin-bottom: 8px;
     }
-
     .step-pill {
       border: none;
       background: transparent;
@@ -369,13 +329,11 @@
       cursor: pointer;
       text-align: center;
     }
-
     .step-pill.active {
       background: #fff;
       color: var(--brand);
       box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
-
     /* Enhanced Audio Bar for iOS */
     .audio-bar {
       background: #0f172a;
@@ -388,7 +346,6 @@
       margin: 8px 0;
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
     .audio-play-btn {
       background: var(--brand);
       color: #fff;
@@ -405,31 +362,26 @@
       transition: all 0.2s ease;
       box-shadow: 0 2px 8px rgba(0, 122, 255, 0.4);
     }
-
     .audio-play-btn.playing {
       background: var(--success);
       transform: scale(1.05);
       animation: pulse 1s infinite alternate;
     }
-
     @keyframes pulse {
       from { box-shadow: 0 0 4px #34c759; }
       to { box-shadow: 0 0 14px #34c759; }
     }
-
     .audio-text-area {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
-
     .audio-status-tag {
       font-size: 10px;
       font-weight: 700;
       color: #38bdf8;
     }
-
     .email-box {
       background: #fffbeb;
       border: 1px solid #fde68a;
@@ -438,23 +390,19 @@
       font-size: 12px;
       line-height: 1.6;
     }
-
     .email-sentence {
       padding: 2px 3px;
       border-radius: 4px;
       cursor: pointer;
     }
-
     .email-sentence.highlighted-correct {
       background: #86efac;
       font-weight: 700;
     }
-
     .email-sentence.highlighted-wrong {
       background: #fca5a5;
       text-decoration: line-through;
     }
-
     .quest-item {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -464,14 +412,12 @@
       flex-direction: column;
       gap: 6px;
     }
-
     .quest-progress-bar {
       height: 6px;
       background: #e2e8f0;
       border-radius: 99px;
       overflow: hidden;
     }
-
     .quest-progress-fill {
       height: 100%;
       background: var(--brand);
@@ -479,11 +425,9 @@
       width: 0%;
       transition: width 0.3s ease;
     }
-
     .quest-progress-fill.done {
       background: var(--success);
     }
-
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -493,7 +437,6 @@
       display: none;
       align-items: flex-end;
     }
-
     .modal-sheet {
       background: #fff;
       width: 100%;
@@ -508,9 +451,7 @@
   </style>
 </head>
 <body>
-
   <div class="app-shell">
-
     <!-- iOS Top Bar -->
     <header class="app-topbar">
       <div class="topbar-header">
@@ -544,7 +485,7 @@
       <!-- Injected by JavaScript -->
     </main>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar (5 Tabs) -->
     <nav class="app-tabbar">
       <button type="button" class="tab-btn active" data-tab="assessment" onclick="switchTab('assessment')">
         <span class="tab-icon">🎯</span>
@@ -567,10 +508,9 @@
         <span>5. เควสต์</span>
       </button>
     </nav>
-
   </div>
 
-  <!-- Modal -->
+  <!-- Modal for Curriculum Overview -->
   <div class="modal-overlay" id="info-modal" onclick="closeModal()">
     <div class="modal-sheet" onclick="event.stopPropagation()">
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -673,6 +613,7 @@
       }
     ];
 
+    // Single App State Definition
     const state = {
       activeTab: "assessment",
       levelId: 1,
@@ -689,60 +630,97 @@
     };
 
     // =========================================================================
+    // LOCAL STORAGE MANAGER (ระบบเซฟและโหลดข้อมูลเกมอัตโนมัติ)
+    // =========================================================================
+    const STORAGE_KEY = 'toeic_global_intern_save_v1';
+
+    function saveUserData() {
+      try {
+        const saveData = {
+          levelId: state.levelId,
+          assessIndex: state.assessIndex,
+          scores: state.scores,
+          exp: state.exp,
+          gold: state.gold,
+          quests: state.quests,
+          lastSaved: new Date().toISOString()
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData));
+      } catch (error) {
+        console.warn("⚠️ ไม่สามารถบันทึก LocalStorage ได้:", error);
+      }
+    }
+
+    function loadUserData() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return false;
+        const data = JSON.parse(saved);
+        if (data) {
+          state.levelId = data.levelId || 1;
+          state.assessIndex = typeof data.assessIndex === 'number' ? data.assessIndex : 0;
+          state.scores = Array.isArray(data.scores) ? data.scores : [];
+          state.exp = data.exp || 0;
+          state.gold = data.gold || 50;
+          if (Array.isArray(data.quests)) state.quests = data.quests;
+          return true;
+        }
+      } catch (error) {
+        console.error("⚠️ โหลดข้อมูลเดิมไม่สำเร็จ:", error);
+      }
+      return false;
+    }
+
+    // =========================================================================
     // iOS OPTIMIZED SPEECH SYNTHESIS ENGINE
     // =========================================================================
-    window._activeUtterance = null; // ป้องกัน iOS Garbage Collector ล้างตัวแปรเสียงทิ้ง
+    window._activeUtterance = null; // ป้องกัน iOS WebKit Garbage Collector ตัดเสียง
 
     function playAudio(btnEl, text) {
       if (!("speechSynthesis" in window)) {
         alert("เบราว์เซอร์นี้ไม่รองรับระบบเสียงพูด");
         return;
       }
-
-      // ปรับปรุงปุ่มแสดงสถานะทันทีเพื่อให้ผู้ใช้ทราบว่าระบบตอบสนอง
       const statusEl = document.getElementById("audio-status-text");
       if (btnEl) btnEl.classList.add("playing");
       if (statusEl) statusEl.textContent = "🔊 กำลังเล่นเสียง...";
 
       try {
-        window.speechSynthesis.cancel(); // รีเซ็ตคิวเสียงเดิม
-        
-        // สำหรับ iOS: ปลดล็อกกรณี Speech อยู่ในสถานะค้าง
+        window.speechSynthesis.cancel();
         if (window.speechSynthesis.paused) {
           window.speechSynthesis.resume();
         }
-
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = "en-US";
-        utterance.rate = 0.95; // ความเร็วพอดีฟังชัด
+        utterance.rate = 0.95;
         utterance.volume = 1.0;
 
         utterance.onstart = function() {
           if (btnEl) btnEl.classList.add("playing");
           if (statusEl) statusEl.textContent = "🔊 กำลังเล่นเสียง...";
         };
-
         utterance.onend = function() {
           if (btnEl) btnEl.classList.remove("playing");
           if (statusEl) statusEl.textContent = "กดปุ่ม ▶ เพื่อฟังอีกครั้ง";
           window._activeUtterance = null;
         };
-
         utterance.onerror = function(e) {
           if (btnEl) btnEl.classList.remove("playing");
-          if (statusEl) statusEl.textContent = "⚠️ ไม่สามารถเล่นเสียงได้ (ตรวจดูโหมดปิดเสียง)";
+          if (statusEl) statusEl.textContent = "⚠️ ไม่สามารถเล่นเสียงได้ (ตรวจดูสวิตช์ปิดเสียงข้างเครื่อง)";
           window._activeUtterance = null;
         };
 
-        window._activeUtterance = utterance; // บันทึกลงตัวแปร Global
+        window._activeUtterance = utterance;
         window.speechSynthesis.speak(utterance);
-
       } catch (err) {
         if (btnEl) btnEl.classList.remove("playing");
         if (statusEl) statusEl.textContent = "⚠️ ขัดข้องในการเล่นเสียง";
       }
     }
 
+    // =========================================================================
+    // NAVIGATION & VIEW RENDERING
+    // =========================================================================
     function switchTab(tab) {
       state.activeTab = tab;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
@@ -809,6 +787,7 @@
         const q = state.quests.find(item => item.id === "assess");
         if (q) q.current = 1;
       }
+      saveUserData();
       render();
     }
 
@@ -825,7 +804,7 @@
               <span style="font-weight:700; font-size:12px; color:var(--brand-dark);">TOEIC ${lv.toeic}</span>
             </div>
             <div style="font-weight:700; font-size:14px; margin-top:4px;">${lv.role} (${lv.thaiRole})</div>
-            <button type="button" class="btn btn-secondary btn-sm" style="margin-top:8px;" onclick="state.levelId=${lv.id}; switchTab('stage');">
+            <button type="button" class="btn btn-secondary btn-sm" style="margin-top:8px;" onclick="state.levelId=${lv.id}; saveUserData(); switchTab('stage');">
               🎮 เล่นตำแหน่งนี้
             </button>
           </div>
@@ -842,7 +821,6 @@
           <button type="button" class="step-pill ${state.stageStep===3?'active':''}" onclick="state.stageStep=3;render();">3.Boss</button>
           <button type="button" class="step-pill ${state.stageStep===4?'active':''}" onclick="state.stageStep=4;render();">4.Coach</button>
         </div>
-
         ${state.stageStep === 1 ? `
           <div class="ios-card">
             <span class="tag tag-purple">Step 1: Story Episode</span>
@@ -855,7 +833,6 @@
                 <div style="font-size:12px; color:#f8fafc;">"${curLv.story.audioScript}"</div>
               </div>
             </div>
-
             <div style="font-size:13px; font-weight:700; margin-top:10px;">${curLv.story.contextQuestion}</div>
             <div class="quiz-options">
               ${curLv.story.options.map(opt => `
@@ -867,7 +844,6 @@
             <button type="button" class="btn btn-primary" style="margin-top:12px;" onclick="state.stageStep=2;render();">ไปต่อ Step 2: Mini-Games →</button>
           </div>
         ` : ''}
-
         ${state.stageStep === 2 ? `
           <div class="ios-card">
             <span class="tag tag-blue">Step 2: Mini-Games</span>
@@ -888,7 +864,6 @@
             <button type="button" class="btn btn-primary" style="margin-top:12px;" onclick="state.stageStep=3;render();">ไปต่อ Step 3: Boss Battle →</button>
           </div>
         ` : ''}
-
         ${state.stageStep === 3 ? `
           <div class="ios-card" style="border:2px solid var(--accent);">
             <span class="tag tag-purple">Step 3: Boss Battle</span>
@@ -902,7 +877,6 @@
             </div>
           </div>
         ` : ''}
-
         ${state.stageStep === 4 ? `
           <div class="ios-card" style="text-align:center;">
             <span class="tag tag-green">Step 4: AI Coach</span>
@@ -919,6 +893,7 @@
         btn.classList.add("correct");
         const q = state.quests.find(item => item.id === "boss");
         if (q) q.current = 1;
+        saveUserData();
         setTimeout(() => { state.stageStep = 4; render(); }, 800);
       } else {
         btn.classList.add("wrong");
@@ -949,6 +924,7 @@
       el.textContent = "🎙️ กำลังตรวจจับเสียง... ความแม่นยำ 95% (ผ่านเกณฑ์!)";
       const q = state.quests.find(item => item.id === "shadow");
       if (q) q.current = 1;
+      saveUserData();
     }
 
     function renderQuests(el) {
@@ -989,6 +965,7 @@
         q.claimed = true;
         state.exp += q.rewardExp;
         state.gold += q.rewardGold;
+        saveUserData();
         render();
       }
     }
@@ -996,6 +973,8 @@
     function openModal() { document.getElementById("info-modal").style.display = "flex"; }
     function closeModal() { document.getElementById("info-modal").style.display = "none"; }
 
+    // Start-up sequence: Load stored progress and render
+    loadUserData();
     render();
   </script>
 </body>
